@@ -1,0 +1,90 @@
+{
+  "settings" : {
+    "hotkeys" : [
+      {
+        "action" : "pickNextVideo",
+        "key" : "F17",
+        "modifiers" : []
+      }
+    ],
+    "preferredBrowserBundleID" : "com.google.Chrome",
+    "preferredFocusBundleIDs" : [
+      "com.google.Chrome",
+      "com.apple.Safari"
+    ],
+    "restoreVolumeAfterPlayback" : false,
+    "volumeFadeDurationSeconds" : 0.0
+  },
+  "videos" : [
+    {
+      "eventName" : "Throwback Marathon",
+      "fighterA" : "Classic UFC",
+      "fighterB" : "Marathon",
+      "id" : "34B27580-2C2C-48B3-85D5-B85F2778AC4A",
+      "tags" : [
+        "ufc",
+        "marathon",
+        "throwback"
+      ],
+      "title" : "Fights Your OLD MAN Told You About",
+      "url" : "https://www.youtube.com/watch?v=R4slhs8PA9w",
+      "year" : 2025
+    },
+    {
+      "eventName" : "UFC 325",
+      "fighterA" : "Volkanovski",
+      "fighterB" : "Lopes 2",
+      "id" : "60F41507-C5AF-4E41-A8AA-459F0358A42E",
+      "tags" : [
+        "ufc325",
+        "marathon",
+        "full-fight"
+      ],
+      "title" : "UFC 325: Free Fight Marathon",
+      "url" : "https://www.youtube.com/watch?v=PqTBCISwu7k",
+      "year" : 2026
+    },
+    {
+      "eventName" : "UFC 323",
+      "fighterA" : "Dvalishvili",
+      "fighterB" : "Yan 2",
+      "id" : "3F164208-10C6-4997-B54F-C4450D87473F",
+      "tags" : [
+        "ufc323",
+        "marathon",
+        "full-fight"
+      ],
+      "title" : "UFC 323: Free Fight Marathon",
+      "url" : "https://www.youtube.com/watch?v=m8pvYuhGwtU",
+      "year" : 2025
+    },
+    {
+      "eventName" : "UFC 320",
+      "fighterA" : "Ankalaev",
+      "fighterB" : "Pereira 2",
+      "id" : "7EF4730B-B34E-4976-B570-654175CCFB4B",
+      "tags" : [
+        "ufc320",
+        "marathon",
+        "full-fight"
+      ],
+      "title" : "UFC 320: Free Fight Marathon",
+      "url" : "https://www.youtube.com/watch?v=QB5KLSaxH2U",
+      "year" : 2025
+    },
+    {
+      "eventName" : "UFC 326",
+      "fighterA" : "Holloway",
+      "fighterB" : "Oliveira 2",
+      "id" : "FFB27649-5A53-43A7-80B6-3EC2B30A0229",
+      "tags" : [
+        "ufc326",
+        "marathon",
+        "full-fight"
+      ],
+      "title" : "UFC 326: Free Fight Marathon",
+      "url" : "https://www.youtube.com/live/0W6WbF2qio4",
+      "year" : 2026
+    }
+  ]
+}

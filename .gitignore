@@ -1,0 +1,63 @@
+# macOS
+.DS_Store
+
+# Swift Package Manager
+.build/
+.swiftpm/
+
+# Xcode
+DerivedData/
+*.xcworkspace
+!Package.xcworkspace
+xcuserdata/
+*.xcuserstate
+*.xccheckout
+*.moved-aside
+*.pbxuser
+
+# App build artifacts
+dist/
+release/
+*.app
+*.dmg
+*.pkg
+*.zip
+
+# Logs
+*.log
+run.log
+
+# Temporary/editor files
+*.swp
+*.swo
+*~
+.tmp/
+
+# Environment / secrets
+.env
+.env.*
+*.p12
+*.cer
+*.mobileprovision
+*.keychain
+AuthKey_*.p8
+
+# Notarization / signing artifacts
+notarization-upload.*
+*.xcarchive
+
+# Coverage / test output
+coverage/
+*.profdata
+*.profraw
+
+# Python leftovers, if any scripts use Python
+__pycache__/
+*.pyc
+
+# Node leftovers, if any tooling was added
+node_modules/
+
+# Misc local files
+.idea/
+.vscode/
