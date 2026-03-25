@@ -46,14 +46,23 @@ enum AutomationPermissionStatus: String, Sendable {
 
 struct DefaultPermissionManager: PermissionManager {
     func accessibilityStatus() -> AccessibilityPermissionStatus {
-        AXIsProcessTrusted() ? .granted : .denied
+        let bundleIdentifier = Bundle.main.bundleIdentifier ?? "nil"
+        let executablePath = Bundle.main.executableURL?.path ?? CommandLine.arguments.first ?? "nil"
+        let trusted = AXIsProcessTrusted()
+        AppLogger.permissions.info("Accessibility trust check bundleID=\(bundleIdentifier, privacy: .public) executablePath=\(executablePath, privacy: .public) AXIsProcessTrusted=\(trusted)")
+        return trusted ? .granted : .denied
     }
 
     func requestAccessibilityPermission() {
+        let bundleIdentifier = Bundle.main.bundleIdentifier ?? "nil"
+        let executablePath = Bundle.main.executableURL?.path ?? CommandLine.arguments.first ?? "nil"
+        let trustedBeforePrompt = AXIsProcessTrusted()
         let options = [kAXTrustedCheckOptionPrompt.takeUnretainedValue() as String: true] as CFDictionary
-        let granted = AXIsProcessTrustedWithOptions(options)
-        let status: AccessibilityPermissionStatus = granted ? .granted : .denied
-        AppLogger.permissions.info("Accessibility permission status: \(status.rawValue, privacy: .public)")
+        let promptResult = AXIsProcessTrustedWithOptions(options)
+        let trustedAfterPromptCall = AXIsProcessTrusted()
+        AppLogger.permissions.info(
+            "Accessibility prompt request bundleID=\(bundleIdentifier, privacy: .public) executablePath=\(executablePath, privacy: .public) trustedBeforePrompt=\(trustedBeforePrompt) promptCallResult=\(promptResult) trustedAfterPromptCall=\(trustedAfterPromptCall)"
+        )
     }
 
     func openAccessibilitySettings() {

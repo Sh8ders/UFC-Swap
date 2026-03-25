@@ -18,6 +18,7 @@ BUILD_NUMBER="${UFCSWAP_BUILD_NUMBER:-${GITHUB_RUN_NUMBER:-1}}"
 BUNDLE_IDENTIFIER="${UFCSWAP_BUNDLE_IDENTIFIER:-com.ufcswap.app}"
 SIGN_IDENTITY="${APPLE_SIGNING_IDENTITY:-}"
 NOTARY_PROFILE="${APPLE_NOTARY_PROFILE:-}"
+SIGNING_MODE="unsigned"
 
 rm -rf "$DIST_DIR"
 mkdir -p "$DIST_DIR"
@@ -50,12 +51,29 @@ sed \
 printf "APPLUFCS" > "$APP_BUNDLE/Contents/PkgInfo"
 chmod +x "$APP_BUNDLE/Contents/MacOS/$APP_NAME"
 
+if codesign --display --verbose=1 "$APP_BUNDLE/Contents/MacOS/$APP_NAME" >/dev/null 2>&1; then
+  codesign --remove-signature "$APP_BUNDLE/Contents/MacOS/$APP_NAME" || true
+fi
+
 if [[ -n "$SIGN_IDENTITY" ]]; then
-  echo "==> Signing app bundle"
+  echo "==> Signing app bundle with Developer ID"
+  SIGNING_MODE="developer-id"
   codesign --force --deep --options runtime --timestamp --sign "$SIGN_IDENTITY" "$APP_BUNDLE"
-  codesign --verify --deep --strict "$APP_BUNDLE"
 else
-  echo "WARNING: APPLE_SIGNING_IDENTITY is not set. Building unsigned app bundle."
+  echo "==> Signing app bundle ad hoc"
+  SIGNING_MODE="ad-hoc"
+  codesign --force --deep --sign - "$APP_BUNDLE"
+  echo "WARNING: APPLE_SIGNING_IDENTITY is not set. App bundle is ad-hoc signed for local packaging only."
+fi
+codesign --verify --deep --strict --verbose=2 "$APP_BUNDLE"
+codesign -dv --verbose=4 "$APP_BUNDLE" || true
+if spctl --assess --type execute -vv "$APP_BUNDLE"; then
+  echo "spctl assessment: accepted"
+else
+  echo "WARNING: spctl rejected $APP_BUNDLE."
+  if [[ "$SIGNING_MODE" == "ad-hoc" ]]; then
+    echo "WARNING: This is expected for ad-hoc/local builds. Gatekeeper acceptance requires a real Developer ID signature and notarization."
+  fi
 fi
 
 echo "==> Creating ZIP"
@@ -72,7 +90,7 @@ if [[ -n "$SIGN_IDENTITY" ]]; then
   echo "==> Signing DMG"
   codesign --force --sign "$SIGN_IDENTITY" "$DMG_PATH"
 else
-  echo "WARNING: DMG is unsigned. Gatekeeper will warn users."
+  echo "WARNING: DMG is unsigned for local packaging. Gatekeeper warnings are expected without Developer ID signing."
 fi
 
 if [[ -n "$SIGN_IDENTITY" && -n "$NOTARY_PROFILE" ]]; then

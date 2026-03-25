@@ -41,6 +41,8 @@ Notes:
 - The app does not install Chrome automatically.
 - `F1` through `F19` are supported for the hotkey capture UI, but on many Macs `F1` through `F12` may require enabling “Use F1, F2, etc. keys as standard function keys” or holding the `fn` key.
 - The default fallback hotkey is `F17`.
+- The packaged app uses the stable bundle identifier `com.ufcswap.app`.
+- If you install an ad-hoc signed local build, then replace or rebuild the app, macOS may require you to re-approve Accessibility for the new build even if the old one was enabled.
 
 ## Release Packaging
 
@@ -62,6 +64,7 @@ Optional environment variables:
 - `APPLE_NOTARY_PROFILE`: notarizes the DMG if available
 - `UFCSWAP_VERSION`: overrides the version string
 - `UFCSWAP_BUILD_NUMBER`: overrides the build number
+- `UFCSWAP_BUNDLE_IDENTIFIER`: overrides the bundle identifier; the default is `com.ufcswap.app`
 
 If signing or notarization is not configured, the script still builds unsigned artifacts and prints a Gatekeeper warning.
 

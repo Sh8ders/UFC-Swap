@@ -48,6 +48,13 @@ final class ControlPanelViewModel: ObservableObject {
                 self?.statusIsError = isError
             }
             .store(in: &cancellables)
+
+        NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)
+            .receive(on: RunLoop.main)
+            .sink { [weak self] _ in
+                self?.refreshSetupChecks()
+            }
+            .store(in: &cancellables)
     }
 
     var toggleHotkey: HotkeyDefinition {
@@ -86,6 +93,7 @@ final class ControlPanelViewModel: ObservableObject {
         }
 
         accessibilityStatus = container.permissionManager.accessibilityStatus()
+        AppLogger.app.info("Refresh options accessibility=\(self.accessibilityStatus.rawValue, privacy: .public)")
     }
 
     func refreshSetupChecks() {
@@ -153,8 +161,11 @@ final class ControlPanelViewModel: ObservableObject {
     func requestPermission() {
         container.feedbackStore.post("Request Permission button pressed")
         container.permissionManager.requestAccessibilityPermission()
-        accessibilityStatus = container.permissionManager.accessibilityStatus()
-        refreshSetupChecks()
+        container.feedbackStore.post("Accessibility request opened. Enable UFCSwap in System Settings, then click Refresh.")
+        Task { @MainActor in
+            try? await Task.sleep(for: .seconds(1))
+            refreshSetupChecks()
+        }
     }
 
     func openAccessibilitySettings() {
